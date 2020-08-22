@@ -1008,14 +1008,13 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     # Stage 3/3: Make changes.
     script.Comment("Stage 3/3")
 
-  is_plus = target_info.GetBuildProp("org.pixelexperience.version").endswith("_plus")
   android_version = target_info.GetBuildProp("ro.build.version.release")
   build_id = target_info.GetBuildProp("ro.build.id")
-  build_date = target_info.GetBuildProp("org.pixelexperience.build_date")
+  build_date = target_info.GetBuildProp("org.twice.build_date")
   security_patch = target_info.GetBuildProp("ro.build.version.security_patch")
-  device = target_info.GetBuildProp("org.pixelexperience.device")
-  script.PrintPixelExperienceBanner(is_plus, android_version, build_id, build_date,
-                                  security_patch, device)
+  device = target_info.GetBuildProp("org.twice.device")
+  script.PrintTwiceBanner(android_version, build_id,
+			  build_date, security_patch, device)
 
   device_specific.FullOTA_InstallBegin()
 
@@ -1625,16 +1624,15 @@ def WriteBlockIncrementalOTAPackage(target_zip, source_zip, output_file):
   target_info.WriteDeviceAssertions(script, OPTIONS.oem_no_mount)
   device_specific.IncrementalOTA_Assertions()
 
-  is_plus = target_info.GetBuildProp("org.pixelexperience.version").endswith("_plus")
   android_version = target_info.GetBuildProp("ro.build.version.release")
   build_id = target_info.GetBuildProp("ro.build.id")
-  build_date = target_info.GetBuildProp("org.pixelexperience.build_date")
+  build_date = target_info.GetBuildProp("org.twice.build_date")
   security_patch = target_info.GetBuildProp("ro.build.version.security_patch")
-  device = target_info.GetBuildProp("org.pixelexperience.device")
+  device = target_info.GetBuildProp("org.twice.device")
   prev_build_id = source_info.GetBuildProp("ro.build.id")
-  prev_build_date = source_info.GetBuildProp("org.pixelexperience.build_date")
+  prev_build_date = source_info.GetBuildProp("org.twice.build_date")
   prev_security_patch = source_info.GetBuildProp("ro.build.version.security_patch")
-  script.PrintPixelExperienceBanner(is_plus, android_version, build_id, build_date,
+  script.PrintTwiceBanner(android_version, build_id, build_date,
                                   security_patch, device, prev_build_id,
                                   prev_build_date, prev_security_patch)
 
@@ -1797,16 +1795,15 @@ def WriteFileIncrementalOTAPackage(target_zip, source_zip, output_file):
   target_info.WriteDeviceAssertions(script, OPTIONS.oem_no_mount)
   device_specific.IncrementalOTA_Assertions()
 
-  is_plus = target_info.GetBuildProp("org.pixelexperience.version").endswith("_plus") 
   android_version = target_info.GetBuildProp("ro.build.version.release")
   build_id = target_info.GetBuildProp("ro.build.id")
-  build_date = target_info.GetBuildProp("org.pixelexperience.build_date")
+  build_date = target_info.GetBuildProp("org.twice.build_date")
   security_patch = target_info.GetBuildProp("ro.build.version.security_patch")
-  device = target_info.GetBuildProp("org.pixelexperience.device")
+  device = target_info.GetBuildProp("org.twice.device")
   prev_build_id = source_info.GetBuildProp("ro.build.id")
-  prev_build_date = source_info.GetBuildProp("org.pixelexperience.build_date")
+  prev_build_date = source_info.GetBuildProp("org.twice.build_date")
   prev_security_patch = source_info.GetBuildProp("ro.build.version.security_patch")
-  script.PrintPixelExperienceBanner(is_plus, android_version, build_id, build_date,
+  script.PrintTwiceBanner(android_version, build_id, build_date,
                                   security_patch, device, prev_build_id,
                                   prev_build_date, prev_security_patch)
 

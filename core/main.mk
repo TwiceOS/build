@@ -179,8 +179,8 @@ endif
 
 #
 # -----------------------------------------------------------------
-# Add our custom properties to the build properties.
-ADDITIONAL_BUILD_PROPERTIES += $(CUSTOM_PROPERTIES)
+# Add our twice properties to the build properties.
+ADDITIONAL_BUILD_PROPERTIES += $(TWICE_PROPERTIES)
 
 # Bring in standard build system definitions.
 include $(BUILD_SYSTEM)/definitions.mk
