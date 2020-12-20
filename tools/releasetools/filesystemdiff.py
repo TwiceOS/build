@@ -266,7 +266,7 @@ class FileSystem(object):
 
 # FileSystemDiff works on two targetfiles zip files.
 class FileSystemDiff(object):
-  def __init__(self, partition, tgt, src=None, threads=None):
+  def __init__(self, partition, tgt, src=None, threads=None, use_dynamic_partition=False):
     if threads is None:
       threads = multiprocessing.cpu_count() // 2
       if threads == 0:
@@ -277,10 +277,12 @@ class FileSystemDiff(object):
     self.partition = partition
     self.zip_partition = self.partition.upper()
 
+    system_prefix = "system_root" if not use_dynamic_partition else "system"
+  
     if self.partition == 'system':
-      self.fs_root = "/%s" % ('system_root/system')
+      self.fs_root = "/%s" % (system_prefix + '/system')
     elif self.partition == 'root':
-      self.fs_root = "/%s" % ('system_root')
+      self.fs_root = "/%s" % (system_prefix)
     else:
       self.fs_root = "/%s" % (self.partition)
 
@@ -368,7 +370,7 @@ class FileSystemDiff(object):
         continue
       if src_file.type() == FsNode.S_IFLNK:
         if src_file.target() != tgt_file.target():
-          self.script.Unlink(fs_filename)
+          self.script.DeleteFile(fs_filename)
           self.script.CreateSymbolicLink(tgt_file.target(), fs_filename,
               tgt_file.uid(), tgt_file.gid())
         if (src_file.uid() != tgt_file.uid() or

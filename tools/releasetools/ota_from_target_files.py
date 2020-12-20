@@ -1649,7 +1649,7 @@ def WriteBlockIncrementalOTAPackage(target_zip, source_zip, output_file):
   script.RunSetupBusybox()
   script.RunMountAll()
 
-  source_version = os.path.splitext(os.path.basename(OPTIONS.incremental_source))[0]
+  source_version = os.path.basename(OPTIONS.incremental_source)[:-4]
   error_msg = "Failed to apply update, please download full package at https://download.pixelexperience.org/" + device
   script.AddPixelExperienceVersionAssertion(error_msg, source_version)
 
@@ -1765,29 +1765,30 @@ def WriteFileIncrementalOTAPackage(target_zip, source_zip, output_file):
       "/tmp/boot.img", "boot.img", OPTIONS.target_tmp, "BOOT", target_info)
   updating_boot = (source_boot.data != target_boot.data)
 
+  use_dynamic_partition = target_info.get('use_dynamic_partitions') == "true"
 
-  system_diff = common.FileSystemDifference("system", target_zip, source_zip)
+  system_diff = common.FileSystemDifference("system", target_zip, source_zip, use_dynamic_partition)
 
-  root_diff = common.FileSystemDifference("root", target_zip, source_zip)
+  root_diff = common.FileSystemDifference("root", target_zip, source_zip, use_dynamic_partition)
 
   if HasVendorPartition(target_zip):
     if not HasVendorPartition(source_zip):
       raise RuntimeError("can't generate incremental that adds /vendor")
-    vendor_diff = common.FileSystemDifference("vendor", target_zip, source_zip)
+    vendor_diff = common.FileSystemDifference("vendor", target_zip, source_zip, use_dynamic_partition)
   else:
     vendor_diff = None
 
   if HasProductPartition(target_zip):
     if not HasProductPartition(source_zip):
       raise RuntimeError("can't generate incremental that adds /product")
-    product_diff = common.FileSystemDifference("product", target_zip, source_zip)
+    product_diff = common.FileSystemDifference("product", target_zip, source_zip, use_dynamic_partition)
   else:
     product_diff = None
 
   if HasOdmPartition(target_zip):
     if not HasOdmPartition(source_zip):
       raise RuntimeError("can't generate incremental that adds /odm")
-    odm_diff = common.FileSystemDifference("odm", target_zip, source_zip)
+    odm_diff = common.FileSystemDifference("odm", target_zip, source_zip, use_dynamic_partition)
   else:
     odm_diff = None
 
@@ -1820,7 +1821,7 @@ def WriteFileIncrementalOTAPackage(target_zip, source_zip, output_file):
   script.RunSetupBusybox()
   script.RunMountAll()
 
-  source_version = os.path.splitext(os.path.basename(OPTIONS.incremental_source))[0]
+  source_version = os.path.basename(OPTIONS.incremental_source)[:-4]
   error_msg = "Failed to apply update, please download full package at https://download.pixelexperience.org/" + device
   script.AddPixelExperienceVersionAssertion(error_msg, source_version)
 
